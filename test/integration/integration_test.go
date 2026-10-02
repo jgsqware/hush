@@ -161,19 +161,37 @@ fail_fast: true
 		// The plan runs in its own directory: point it at the examples.
 		must(t, os.Symlink(filepath.Join(abs(t, root), "examples/playbooks"), filepath.Join(l.dir, "playbooks")))
 		out, code := l.hushRun(t, "run", path)
-		expect(t, out, code, 0,
+		want := []string{
 			"✓ before version",
 			"✓ guard  2 hosts in 127.0.0.0/8, ::1/128",
 			"━━ 1/1  Base",
-			"INJECT_FACTS_AS_VARS",
+			"sftp/scp failed → fallback",
 			"✔ SUCCESS  2 playbooks · 2 hosts",
-		)
+		}
+		if ansibleAtLeast(t, 2, 19) { // the INJECT_FACTS_AS_VARS deprecation starts in 2.19
+			want = append(want, "INJECT_FACTS_AS_VARS")
+		}
+		expect(t, out, code, 0, want...)
 
 		refused := strings.Replace(plan, `[127.0.0.0/8, "::1/128"]`, "[10.0.0.0/8]", 1)
 		must(t, os.WriteFile(path, []byte(refused), 0o644))
 		out, code = l.hushRun(t, "run", path)
 		expect(t, out, code, 1, "✗ guard  refusing to run", "2 playbooks not run (guard refused)")
 	})
+}
+
+// ansibleAtLeast reports whether ansible-core is at least major.minor.
+func ansibleAtLeast(t *testing.T, major, minor int) bool {
+	t.Helper()
+	out, err := exec.Command("ansible-playbook", "--version").Output()
+	must(t, err)
+	var ma, mi int
+	if i := bytes.Index(out, []byte("[core ")); i < 0 {
+		t.Fatalf("cannot read the ansible-core version: %s", out)
+	} else if _, err := fmt.Sscanf(string(out[i+len("[core "):]), "%d.%d", &ma, &mi); err != nil {
+		t.Fatal(err)
+	}
+	return ma > major || ma == major && mi >= minor
 }
 
 func expect(t *testing.T, out string, code, wantCode int, contains ...string) {
