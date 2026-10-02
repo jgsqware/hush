@@ -1,0 +1,18 @@
+◆ hush  replay
+
+ ▸ tools/monitoring-servers/deploy-prometheus.yaml   mon-01
+   ● Create/Update Prometheus container
+   ✓ 5 ok  ● 1 changed  ⊘ 1 skip                                                                  3s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 1 host · 0 failed · 1 changed · 3s
+
+   host    ok   chg  skip  fail  unreach
+   mon-01  6    1    1     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh   sftp/scp failed → fallback ×2 · 192.0.2.11  → ansible_ssh_transfer_method=piped
+   2.24  INJECT_FACTS_AS_VARS ×2 · tools/monitoring-servers/deploy-prometheus.yaml
+         → ansible_facts['user_dir'] (no ansible_ prefix)
+
+ logs  .hush/logs/replay.jsonl

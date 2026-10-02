@@ -1,0 +1,60 @@
+# Exercises most aggregation rules: ok/changed/skipped, divergent hosts,
+# loops, debug, handlers, include_tasks, ignore_errors, rescue.
+- name: Configure web and mon
+  hosts: web,mon
+  become: true
+  tasks:
+    - name: Gather a fact
+      ansible.builtin.setup:
+        gather_subset: [min]
+
+    - name: Always ok
+      ansible.builtin.command: "true"
+      changed_when: false
+
+    - name: Only on web
+      ansible.builtin.command: "true"
+      when: inventory_hostname == 'web-01'
+
+    - name: Create config directories
+      ansible.builtin.file:
+        path: "/etc/demo/{{ item }}"
+        state: directory
+      loop: [conf.d, provisioning, dashboards, "{{ 'alerts' if inventory_hostname == 'web-01' else 'conf.d' }}"]
+
+    - name: Write config
+      ansible.builtin.copy:
+        dest: /etc/demo/app.conf
+        content: "host={{ inventory_hostname }} ts={{ now() }}\n"
+      notify: Restart demo
+
+    - name: Show version info
+      ansible.builtin.debug:
+        msg:
+          - "Demo app v1.17.1 · env development"
+          - "OTLP grpc://alloy:4317 · http://alloy:4318"
+
+    - name: Use a top-level fact (deprecated in recent ansible)
+      ansible.builtin.debug:
+        msg: "{{ ansible_hostname }}"
+      when: false
+
+    - name: Include extra tasks
+      ansible.builtin.include_tasks: tasks/extra.yaml
+
+    - name: Tolerated failure
+      ansible.builtin.command: /bin/false
+      ignore_errors: true
+
+    - name: Block with rescue
+      block:
+        - name: Fails on purpose
+          ansible.builtin.command: sh -c 'echo boom >&2; exit 3'
+      rescue:
+        - name: Recovered
+          ansible.builtin.debug:
+            msg: rescued
+
+  handlers:
+    - name: Restart demo
+      ansible.builtin.command: "true"

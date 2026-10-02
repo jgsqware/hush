@@ -1,0 +1,26 @@
+◆ hush  replay
+
+::group::▸ tools/caddy/deploy.yaml   web-01 mon-01
+   ● Create an container with caddy-custom     web-01 mon-01
+::endgroup::
+   ✗ Restart caddy                             mon-01
+     at tools/caddy/deploy.yaml:47
+     msg: |
+       Error starting container 3f1c9e2a: 500 Server Error for http+docker://localhost/v1.47/
+       containers/3f1c9e2a/start: Internal Server Error ("driver failed programming external
+       connectivity on endpoint caddy: Bind for 0.0.0.0:443 failed: port is already allocated")
+     ↻ rerun  --start-at-task "Restart caddy"
+   ● Restart caddy                             web-01  ✗ mon-01
+   ✓ 4 ok  ● 1 changed  ✗ 1 failed                                                                3s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✘ FAILED (exit 2)  1 playbook · 2 hosts · 1 failed · 3 changed · 3s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  6    2    0     0     0
+   mon-01  5    1    0     1     0
+
+ ⚠ To fix (deduplicated)
+   ssh  sftp/scp failed → fallback ×4 · 2 hosts  → ansible_ssh_transfer_method=piped
+
+ logs  .hush/logs/replay.jsonl

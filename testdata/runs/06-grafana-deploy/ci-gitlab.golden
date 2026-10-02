@@ -1,0 +1,24 @@
+[38;5;141m◆ hush[0m  replay
+
+[0Ksection_start:1790847039:hush_playbook_1[collapsed=false][0K [38;5;75m▸ tools/monitoring-servers/deploy-grafana.yaml[0m   [38;5;245mmon-01[0m
+   [38;5;214m●[0m Reset Grafana provisioning tree on remo…  2/2 items  [38;5;245m/home/deploy/monitoring/grafana/provision…[0m
+   [38;5;214m●[0m Ensure Grafana config directories exist   3/4 items  [38;5;245m/home/deploy/monitoring/grafana/provision…[0m
+   [38;5;214m●[0m Copy Grafana provisioning files (dashboard providers)
+   [38;5;214m●[0m Template Grafana datasources (interpolates vault secret)
+   [38;5;214m●[0m Copy Grafana dashboards
+   [38;5;214m●[0m Create/Update Grafana container
+[0Ksection_end:1790847043:hush_playbook_1[0K
+   [38;5;71m✓ 2 ok[0m  [38;5;214m● 6 changed[0m                                                                            [38;5;245m5s[0m
+
+[38;5;75m━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+ [38;5;71m[1m✔ SUCCESS[0m[0m  1 playbook · 1 host · 0 failed · 6 changed · 5s
+
+[38;5;245m   host    ok   chg  skip  fail  unreach[0m
+   mon-01  [38;5;71m8  [0m  [38;5;214m6  [0m  [38;5;245m0   [0m  [38;5;245m0   [0m  [38;5;245m0[0m
+
+ [38;5;214m⚠ To fix (deduplicated)[0m
+   [38;5;75mssh [0m  sftp/scp failed → fallback [38;5;214m×2[0m[38;5;245m · 192.0.2.11[0m  [38;5;71m→ ansible_ssh_transfer_method=piped[0m
+   [38;5;75m2.24[0m  INJECT_FACTS_AS_VARS [38;5;214m×1[0m[38;5;245m · tools/monitoring-servers/vars/grafana_env_vars.yaml:7[0m
+         [38;5;71m→ ansible_facts['user_dir'] (no ansible_ prefix)[0m
+
+ [38;5;245mlogs[0m  .hush/logs/replay.jsonl

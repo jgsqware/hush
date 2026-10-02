@@ -1,0 +1,18 @@
+# A real failure plus an unreachable host.
+- name: Break things
+  hosts: web,mon,ghost
+  gather_facts: false
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
+
+    - name: Fail on mon only
+      ansible.builtin.shell: |
+        echo "starting" 
+        echo "error: config invalid at line 12" >&2
+        echo "hint: check /etc/demo/app.conf" >&2
+        exit 2
+      when: inventory_hostname == 'mon-01'
+
+    - name: After the failure
+      ansible.builtin.command: "true"

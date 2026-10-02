@@ -1,0 +1,13 @@
+[WARNING]: sftp transfer mechanism failed on [192.0.2.11]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: scp transfer mechanism failed on [192.0.2.11]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /work/infra/.lab/work/tools/monitoring-servers/vars/grafana_env_vars.yaml:7:14
+
+5 # host and mounted read-only into the container. Suffixed per instance so
+6 # grafana-stage can test a new tree without touching prod's copy.
+7 grafana_dir: "{{ ansible_user_dir }}/monitoring/grafana{{ grafana_env_suffix | default('') }}"
+               ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+

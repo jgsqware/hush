@@ -1,0 +1,20 @@
+# Example plan for the lab: `hush run plan.yaml` from examples/.
+before:
+  - name: ansible
+    run: ansible --version
+    summary_regex: 'core ([\d.]+)'
+guard:
+  allowed_cidrs: [127.0.0.0/8]
+  inventory: inventory.yaml
+env:
+  ANSIBLE_CONFIG: ansible.cfg
+sections:
+  - name: Base config
+    playbooks:
+      - { path: playbooks/site.yaml }
+      - { path: playbooks/free.yaml, limit: web-01 }
+  - name: Checks
+    playbooks:
+      - { path: playbooks/warnings.yaml }
+      - { path: playbooks/fail.yaml, limit: "web-01,mon-01" }
+fail_fast: true

@@ -1,0 +1,23 @@
+◆ hush  replay
+
+ ▸ tools/monitoring-servers/deploy-grafana.yaml   mon-01
+   ● Reset Grafana provisioning tree on remo…  2/2 items  /home/deploy/monitoring/grafana/provision…
+   ● Ensure Grafana config directories exist   3/4 items  /home/deploy/monitoring/grafana/provision…
+   ● Copy Grafana provisioning files (dashboard providers)
+   ● Template Grafana datasources (interpolates vault secret)
+   ● Copy Grafana dashboards
+   ● Create/Update Grafana container
+   ✓ 2 ok  ● 6 changed                                                                            5s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 1 host · 0 failed · 6 changed · 5s
+
+   host    ok   chg  skip  fail  unreach
+   mon-01  8    6    0     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh   sftp/scp failed → fallback ×2 · 192.0.2.11  → ansible_ssh_transfer_method=piped
+   2.24  INJECT_FACTS_AS_VARS ×1 · tools/monitoring-servers/vars/grafana_env_vars.yaml:7
+         → ansible_facts['user_dir'] (no ansible_ prefix)
+
+ logs  .hush/logs/replay.jsonl

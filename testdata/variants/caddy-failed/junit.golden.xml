@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="hush" tests="12" failures="1" errors="0" skipped="0" time="3">
+  <testsuite name="tools/caddy/deploy.yaml" tests="12" failures="1" errors="0" skipped="0" time="3" timestamp="2026-10-01T09:30:22">
+    <testcase name="Gathering Facts [mon-01]" classname="Deploy Caddy custom image" time="0.307"></testcase>
+    <testcase name="Gathering Facts [web-01]" classname="Deploy Caddy custom image" time="0.307"></testcase>
+    <testcase name="create local work folder [web-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="8" time="0.307"></testcase>
+    <testcase name="create local work folder [mon-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="8" time="0.307"></testcase>
+    <testcase name="Pull image from local registry [web-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="14" time="0.307"></testcase>
+    <testcase name="Pull image from local registry [mon-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="14" time="0.307"></testcase>
+    <testcase name="Create an container with caddy-custom [web-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="20" time="0.307">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="Create an container with caddy-custom [mon-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="20" time="0.307">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="copy Caddyfile file on the server [mon-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="41" time="0.307"></testcase>
+    <testcase name="copy Caddyfile file on the server [web-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="41" time="0.307"></testcase>
+    <testcase name="Restart caddy [web-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="47" time="0.307">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="Restart caddy [mon-01]" classname="Deploy Caddy custom image" file="tools/caddy/deploy.yaml" line="47" time="0.307">
+      <failure message="Error starting container 3f1c9e2a: 500 Server Error for http+docker://localhost/v1.47/containers/3f1c9e2a/start: Internal Server Error (&#34;driver failed programming external connectivity on endpoint caddy: Bind for 0.0.0.0:443 failed: port is already allocated&#34;)" type="failed"></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

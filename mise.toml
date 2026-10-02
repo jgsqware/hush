@@ -1,0 +1,125 @@
+[tools]
+# Build
+go = "1.27.1"
+
+# Ansible lab (controller). ansible-core is installed with uv via the pipx backend.
+python = "3.13"
+uv = "0.12.21"
+"pipx:ansible-core" = { version = "2.21.4", uvx = "true" }
+
+# Lint & release
+golangci-lint = "2.14.0"
+goreleaser = "2.18.2"
+syft = "latest" # SBOM generation for goreleaser
+
+# README gif (vhs also needs ffmpeg from the system package manager)
+vhs = "0.12.1"
+ttyd = "1.7.7"
+
+# ---------------------------------------------------------------------------
+# Tasks: `mise tasks` lists them, `mise run <task>` (or `mise <task>`) runs one.
+# ---------------------------------------------------------------------------
+
+[env]
+_.path = ["{{config_root}}/bin"]
+
+[vars]
+ldflags = "-X main.version=$(git describe --tags --always --dirty) -X main.commit=$(git rev-parse --short HEAD) -X main.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+[tasks.build]
+description = "Build bin/hush"
+run = 'go build -ldflags "{{vars.ldflags}}" -o bin/hush ./cmd/hush'
+sources = ["go.mod", "go.sum", "cmd/**/*.go", "internal/**/*"]
+outputs = ["bin/hush"]
+
+[tasks.install]
+description = "Install hush into $GOBIN (or ~/go/bin)"
+run = 'go install -ldflags "{{vars.ldflags}}" ./cmd/hush'
+
+[tasks.fmt]
+description = "Format Go code"
+run = "gofmt -w cmd internal test"
+
+[tasks.lint]
+description = "gofmt + go vet + golangci-lint"
+run = [
+  'test -z "$(gofmt -l cmd internal test)" || { gofmt -l cmd internal test; echo "run: mise run fmt"; exit 1; }',
+  "go vet ./...",
+  "golangci-lint run ./...",
+]
+
+[tasks.test]
+description = "Unit and golden tests, with the race detector"
+run = "go test -race -count=1 ./..."
+
+[tasks."test:update"]
+description = "Regenerate golden files, then show what changed"
+run = ["go test ./internal/render/ -update", "git --no-pager diff --stat -- testdata/"]
+
+[tasks.check]
+description = "Everything CI checks: lint + test"
+depends = ["lint", "test"]
+
+[tasks."golden:view"]
+description = "Print every golden output (pipe into less -R)"
+run = '''
+for f in testdata/*/*/plain.golden; do
+  printf '\n\033[1m### %s\033[0m\n' "$f"
+  cat "$f"
+done
+'''
+
+[tasks.replay]
+description = "Replay a recorded run: mise run replay <file.jsonl> [hush flags]"
+depends = ["build"]
+raw = true
+run = "hush replay"
+
+[tasks."lab:up"]
+description = "Start the SSH lab (web-01 :2221, mon-01 :2222); no-op when already up"
+run = "examples/lab/up.sh"
+
+[tasks."lab:down"]
+description = "Stop and remove the SSH lab"
+dir = "examples/lab"
+run = "docker compose down"
+
+[tasks."lab:run"]
+description = "Run a lab playbook through hush: mise run lab:run [site|fail|free|warnings] [hush flags]"
+depends = ["build", "lab:up"]
+dir = "examples"
+raw = true # hush gets the real terminal: colors and the live status line
+usage = '''
+arg "[playbook]" default="site" help="playbook name in examples/playbooks"
+arg "[flags]..." var=#true help="extra hush flags, e.g. -v or --color=always"
+'''
+run = 'hush ${usage_flags} -- ansible-playbook playbooks/${usage_playbook}.yaml'
+
+[tasks."lab:plan"]
+description = "Run examples/plan.yaml through hush run: mise run lab:plan [hush flags]"
+depends = ["build", "lab:up"]
+dir = "examples"
+raw = true
+usage = 'arg "[flags]..." var=#true help="extra hush flags, e.g. -v or --junit report.xml"'
+run = 'hush ${usage_flags} run plan.yaml'
+
+[tasks."lab:record"]
+description = "Re-record lab fixtures on ansible-core 2.21 and 2.16"
+depends = ["lab:up"]
+run = '''
+set -e
+for p in site fail free warnings; do
+  scripts/record-fixture.sh "2.21-$p" "playbooks/$p.yaml"
+  ANSIBLE_PLAYBOOK="uvx -q --python 3.12 --from ansible-core==2.16.* ansible-playbook" \
+    scripts/record-fixture.sh "2.16-$p" "playbooks/$p.yaml"
+done
+'''
+
+[tasks.demo]
+description = "Record the README gif (docs/demo.gif) from docs/demo.tape"
+depends = ["build", "lab:up"]
+run = "vhs docs/demo.tape"
+
+[tasks.clean]
+description = "Remove build output and local run logs"
+run = "rm -rf bin dist examples/.hush .hush"

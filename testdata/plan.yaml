@@ -1,0 +1,27 @@
+# Plan reproducing the real lab run (anonymized).
+before:
+  - name: devault
+    run: ./scripts/lab-devault.sh
+    summary_regex: '(\d+) bloc.* dans (\d+) fichier'
+    warn_regex: '^\s+AVERTISSEMENT (.+)$'
+guard:
+  allowed_cidrs: [192.0.2.0/24]
+  inventory: inventory.yaml
+env:
+  ANSIBLE_CONFIG: ansible.cfg
+fail_fast: true
+sections:
+  - name: "Docker hosts + Caddy"
+    playbooks:
+      - { path: servers/docker/deploy_full.yaml, limit: "web-01,mon-01", fixture: runs/01-docker-deploy-full }
+      - { path: tools/caddy/deploy.yaml, limit: "web-01,mon-01", fixture: runs/02-caddy-deploy }
+  - name: "Monitoring stack (mon-01)"
+    playbooks:
+      - { path: tools/monitoring-servers/deploy-loki.yaml, limit: "mon-01", fixture: runs/03-loki-deploy }
+      - { path: tools/monitoring-servers/deploy-prometheus.yaml, limit: "mon-01", fixture: runs/04-prometheus-deploy }
+      - { path: tools/monitoring-servers/deploy-tempo.yaml, limit: "mon-01", fixture: runs/05-tempo-deploy }
+      - { path: tools/monitoring-servers/deploy-grafana.yaml, limit: "mon-01", fixture: runs/06-grafana-deploy }
+  - name: "web-01: application + Alloy"
+    playbooks:
+      - { path: projects/app-frontend/deploy.yaml, limit: "web-01", fixture: runs/07-app-frontend-deploy }
+      - { path: tools/monitoring-alloy/deploy-alloy.yaml, limit: "web-01", fixture: runs/08-alloy-deploy }

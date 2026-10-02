@@ -1,0 +1,14 @@
+- name: Trigger warnings
+  hosts: web,mon
+  tasks:
+    - name: Use a top-level fact
+      ansible.builtin.debug:
+        msg: "{{ ansible_hostname }}"
+    - name: Copy a file
+      ansible.builtin.copy:
+        dest: /tmp/hush-demo
+        content: "hi\n"
+    - name: Module warning
+      ansible.builtin.file:
+        path: /tmp/hush-demo
+        mode: 644

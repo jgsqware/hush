@@ -1,0 +1,17 @@
+◆ hush  replay
+
+ ▸ playbooks/free.yaml   web-01 mon-01
+   ● Sleep a bit, longer on web                mon-01 web-01
+   ✓ 1 ok  ● 1 changed                                                                            2s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 2 hosts · 0 failed · 2 changed · 2s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  2    1    0     0     0
+   mon-01  2    1    0     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh  sftp/scp failed → fallback ×2 · 127.0.0.1  → ansible_ssh_transfer_method=piped
+
+ logs  .hush/logs/replay.jsonl

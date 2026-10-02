@@ -1,0 +1,5 @@
+/hush
+/bin/
+/dist/
+.hush/
+__pycache__/

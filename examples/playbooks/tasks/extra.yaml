@@ -1,0 +1,3 @@
+- name: Extra task from include
+  ansible.builtin.command: "true"
+  changed_when: false

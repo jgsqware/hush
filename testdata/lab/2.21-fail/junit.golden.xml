@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="hush" tests="6" failures="1" errors="1" skipped="1" time="0.545">
+  <testsuite name="playbooks/fail.yaml" tests="6" failures="1" errors="1" skipped="1" time="0.545" timestamp="2026-10-01T13:47:03">
+    <testcase name="Ping [ghost-01]" classname="Break things" file="playbooks/fail.yaml" line="6" time="0.013">
+      <error message="Failed to connect to the host via ssh: ssh: connect to host 127.0.0.1 port 2299: Connection refused" type="unreachable"></error>
+    </testcase>
+    <testcase name="Ping [web-01]" classname="Break things" file="playbooks/fail.yaml" line="6" time="0.195"></testcase>
+    <testcase name="Ping [mon-01]" classname="Break things" file="playbooks/fail.yaml" line="6" time="0.199"></testcase>
+    <testcase name="Fail on mon only [web-01]" classname="Break things" file="playbooks/fail.yaml" line="9" time="0.007">
+      <skipped message="Conditional result was False"></skipped>
+    </testcase>
+    <testcase name="Fail on mon only [mon-01]" classname="Break things" file="playbooks/fail.yaml" line="9" time="0.197">
+      <failure message="The command exited with a non-zero return code." type="failed">rc: 2&#xA;stdout:&#xA;starting&#xA;stderr:&#xA;error: config invalid at line 12&#xA;hint: check /etc/demo/app.conf&#xA;</failure>
+    </testcase>
+    <testcase name="After the failure [web-01]" classname="Break things" file="playbooks/fail.yaml" line="17" time="0.137">
+      <system-out>changed</system-out>
+    </testcase>
+  </testsuite>
+</testsuites>

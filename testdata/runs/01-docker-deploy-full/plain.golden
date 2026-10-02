@@ -1,0 +1,21 @@
+◆ hush  replay
+
+ ▸ servers/docker/deploy_full.yaml   web-01 mon-01
+   ● Enable ressource slice                    web-01 mon-01
+   ✓ 22 ok  ● 1 changed  ⊘ 8 skip                                                                13s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 2 hosts · 0 failed · 2 changed · 13s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  23   1    8     0     0
+   mon-01  23   1    8     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh   sftp/scp failed → fallback ×4 · 2 hosts  → ansible_ssh_transfer_method=piped
+   2.25  apt_key deprecated ×1 · servers/docker/_docker_install.yaml:23  → deb822_repository
+   2.25  apt_repository deprecated ×1 · servers/docker/_docker_install.yaml:29  → deb822_repository
+   2.24  INJECT_FACTS_AS_VARS ×1 · servers/docker/_docker_install.yaml:100
+         → ansible_facts['virtualization_type'] (no ansible_ prefix)
+
+ logs  .hush/logs/replay.jsonl

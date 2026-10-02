@@ -1,0 +1,11 @@
+[WARNING]: sftp transfer mechanism failed on [192.0.2.10]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: scp transfer mechanism failed on [192.0.2.10]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /work/infra/.lab/work/tools/monitoring-alloy/vars/monitoring-alloy.yml:1:17
+
+1 monitoring_dir: "{{ ansible_user_dir }}/monitoring"
+                  ^ column 17
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+

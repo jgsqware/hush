@@ -1,0 +1,43 @@
+{
+    "_meta": {
+        "hostvars": {
+            "mon-01": {
+                "ansible_host": "192.0.2.11",
+                "ansible_user": "deploy"
+            },
+            "web-01": {
+                "ansible_host": "192.0.2.10",
+                "ansible_user": "deploy"
+            }
+        },
+        "profile": "inventory_legacy"
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "docker",
+            "app_docker"
+        ]
+    },
+    "app_docker": {
+        "hosts": [
+            "web-01"
+        ]
+    },
+    "docker": {
+        "children": [
+            "web",
+            "mon"
+        ]
+    },
+    "mon": {
+        "hosts": [
+            "mon-01"
+        ]
+    },
+    "web": {
+        "hosts": [
+            "web-01"
+        ]
+    }
+}

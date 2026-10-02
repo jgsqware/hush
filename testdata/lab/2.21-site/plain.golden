@@ -1,0 +1,24 @@
+◆ hush  replay
+
+ ▸ playbooks/site.yaml   web-01 mon-01
+   ● Only on web                               web-01  ⊘ mon-01
+   ● Write config                              web-01 mon-01
+   ╭─ info  Demo app v1.17.1 · env development
+   ╰─ OTLP grpc://alloy:4317 · http://alloy:4318
+   ~ Tolerated failure                         web-01 mon-01  ignored: The command exited with a no…
+   ↺ Fails on purpose                          web-01 mon-01  rescued: The command exited with a no…
+   ── info  rescued
+   ● Restart demo                              web-01 mon-01
+   ✓ 8 ok  ● 3 changed  ⊘ 1 skip  ↺ 1 rescued  ~ 1 ignored                                        3s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 2 hosts · 0 failed · 7 changed · 3s
+
+   host    ok   chg  skip  fail  unreach  rescued  ignored
+   web-01  12   4    1     0     0        1        1
+   mon-01  11   3    2     0     0        1        1
+
+ ⚠ To fix (deduplicated)
+   ssh  sftp/scp failed → fallback ×24 · mon-01  → ansible_ssh_transfer_method=piped
+
+ logs  .hush/logs/replay.jsonl

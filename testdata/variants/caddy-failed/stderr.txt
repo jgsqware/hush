@@ -1,0 +1,4 @@
+[WARNING]: sftp transfer mechanism failed on [192.0.2.11]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: scp transfer mechanism failed on [192.0.2.11]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: sftp transfer mechanism failed on [192.0.2.10]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: scp transfer mechanism failed on [192.0.2.10]. Use ANSIBLE_DEBUG=1 to see detailed information

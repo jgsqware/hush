@@ -1,0 +1,91 @@
+# Known warnings and how to fix them. hush matches each warning against these
+# rules, in order; the first match wins. Users can add or override rules in
+# ~/.config/hush/fixes.yaml (same format, checked before these).
+#
+# Fields:
+#   id       dedup key; {1}, {2}... are groups of `match`
+#   kind     warning | deprecation | any (default any)
+#   match    regexp on the warning message
+#   context  optional regexp on the source snippet shown under "Origin:";
+#            its groups are {c1}, {c2}... in `fix`. Occurrences can resolve
+#            to different fixes: the most frequent one is shown
+#   tag      short column shown before the label (deprecations default to
+#            the removal version)
+#   label    short description; {1}... allowed (default: the message)
+#   fix      what to do; empty when unknown
+#   fix_default  used instead of `fix` when `context` does not match
+#   hide     count it but do not show it (pure noise)
+rules:
+  - id: ssh_transfer_fallback
+    kind: warning
+    match: '\b(?:sftp|scp) transfer mechanism failed on'
+    tag: ssh
+    label: sftp/scp failed → fallback
+    fix: ansible_ssh_transfer_method=piped
+
+  - id: noise.deprecation_hint
+    match: '^Deprecation warnings can be disabled by setting'
+    hide: true
+
+  - id: deprecation.INJECT_FACTS_AS_VARS
+    kind: deprecation
+    match: 'INJECT_FACTS_AS_VARS'
+    label: INJECT_FACTS_AS_VARS
+    context: '\bansible_(\w+)'
+    fix: "ansible_facts['{c1}'] (no ansible_ prefix)"
+    fix_default: "ansible_facts['name'] (no ansible_ prefix)"
+
+  - id: deprecation.{1}
+    kind: deprecation
+    match: '^(apt_key|apt_repository) has been deprecated'
+    label: '{1} deprecated'
+    fix: deb822_repository
+
+  - id: python_interpreter_discovery
+    kind: warning
+    match: 'is using the discovered Python interpreter at'
+    tag: python
+    label: discovered Python interpreter
+    fix: ansible_python_interpreter=/usr/bin/python3 (or auto_silent)
+
+  - id: jinja_in_conditional
+    kind: warning
+    match: 'conditional statements should not include jinja2 templating delimiters'
+    tag: jinja
+    label: '{{ }} in when:'
+    fix: "drop the {{ }} from when: expressions"
+
+  - id: inventory.empty
+    kind: warning
+    match: 'provided hosts list is empty, only localhost is available'
+    tag: inventory
+    label: empty inventory
+    fix: check the -i path and the inventory syntax
+
+  - id: inventory.no_match
+    kind: warning
+    match: 'Could not match supplied host pattern'
+    tag: inventory
+    label: host pattern matched nothing
+    fix: "check --limit and the play's hosts: pattern"
+
+  - id: inventory.group_chars
+    kind: warning
+    match: 'Invalid characters were found in group names'
+    tag: inventory
+    label: invalid group names
+    fix: "rename groups to use [A-Za-z0-9_] only"
+
+  - id: vars.reserved_name
+    kind: warning
+    match: 'Found variable using reserved name: (\S+)'
+    tag: vars
+    label: 'reserved variable name {1}'
+    fix: rename the variable
+
+  - id: remote_tmp_created
+    kind: warning
+    match: 'remote_tmp .* did not exist and was created'
+    tag: ssh
+    label: remote_tmp created on the fly
+    fix: create it beforehand or set ansible_remote_tmp

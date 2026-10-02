@@ -1,0 +1,15 @@
+all:
+  children:
+    docker:
+      children:
+        web:
+          hosts:
+            web-01: { ansible_host: 192.0.2.10 }
+        mon:
+          hosts:
+            mon-01: { ansible_host: 192.0.2.11 }
+    app_docker:
+      hosts:
+        web-01:
+  vars:
+    ansible_user: deploy

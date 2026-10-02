@@ -1,0 +1,28 @@
+◆ hush  replay
+
+ ▸ tools/monitoring-alloy/deploy-alloy.yaml   web-01
+   ● Create Alloy container
+   ╭─ info  Grafana Alloy v1.17.1 deployed on web-01 (env: development).
+   │ Applications send OpenTelemetry (OTLP) to Alloy at:
+   │   gRPC : grpc://alloy:4317   (OTEL_EXPORTER_OTLP_PROTOCOL=grpc)
+   │   HTTP : http://alloy:4318   (OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf)
+   │   e.g. OTEL_EXPORTER_OTLP_ENDPOINT=http://alloy:4318
+   │ Signals handled: traces -> Tempo | metrics -> Prometheus | logs -> Loki (all pushed to mon-01).
+   │ Replaces the old 'otel-collector' endpoint: same ports, only the host name changes to 'alloy'.
+   │ The app container MUST be attached to the 'proxy_network' or 'monitoring_network' Docker
+   │ network (no port is published on the host).
+   ╰─ Alloy internal UI/API: http://alloy:12345 (reachable from the 'monitoring_network' network).
+   ✓ 6 ok  ● 1 changed  ⊘ 5 skip                                                                  8s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 1 host · 0 failed · 1 changed · 8s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  7    1    5     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh   sftp/scp failed → fallback ×2 · 192.0.2.10  → ansible_ssh_transfer_method=piped
+   2.24  INJECT_FACTS_AS_VARS ×1 · tools/monitoring-alloy/vars/monitoring-alloy.yml:1
+         → ansible_facts['user_dir'] (no ansible_ prefix)
+
+ logs  .hush/logs/replay.jsonl

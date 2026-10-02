@@ -1,0 +1,13 @@
+# Two SSH targets for trying hush and recording test fixtures.
+# Start with ./up.sh (generates the SSH key on first run).
+services:
+  web-01:
+    build: .
+    hostname: web-01
+    ports: ["127.0.0.1:2221:22"]
+  mon-01:
+    build: .
+    hostname: mon-01
+    ports: ["127.0.0.1:2222:22"]
+    # No sftp subsystem: ansible falls back and warns, which exercises hush's fix table.
+    command: ["sh", "-c", "sed -i 's|^Subsystem.*|Subsystem sftp /nonexistent|' /etc/ssh/sshd_config && exec /usr/sbin/sshd -D -e"]

@@ -1,0 +1,31 @@
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: apt_key has been deprecated. Use deb822_repository instead. This feature will be removed from ansible-core version 2.25.
+Origin: /work/infra/.lab/work/servers/docker/_docker_install.yaml:23:3
+
+21
+22 - name: Add Docker GPG apt Key
+23   apt_key:
+     ^ column 3
+
+[DEPRECATION WARNING]: apt_repository has been deprecated. Use deb822_repository instead. This feature will be removed from ansible-core version 2.25.
+Origin: /work/infra/.lab/work/servers/docker/_docker_install.yaml:29:3
+
+27
+28 - name: Add Docker Repository
+29   apt_repository:
+     ^ column 3
+
+[WARNING]: sftp transfer mechanism failed on [192.0.2.10]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: scp transfer mechanism failed on [192.0.2.10]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: sftp transfer mechanism failed on [192.0.2.11]. Use ANSIBLE_DEBUG=1 to see detailed information
+[WARNING]: scp transfer mechanism failed on [192.0.2.11]. Use ANSIBLE_DEBUG=1 to see detailed information
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /work/infra/.lab/work/servers/docker/_docker_install.yaml:100:9
+
+ 98     cmd: sysctl -p /etc/sysctl.d/99-caddy-quic.conf
+ 99   changed_when: false
+100   when: ansible_virtualization_type not in ['lxc', 'container']
+            ^ column 9
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+

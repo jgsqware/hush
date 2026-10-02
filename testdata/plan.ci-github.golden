@@ -1,0 +1,70 @@
+◆ hush  plan.yaml  3 sections · 8 playbooks
+
+ ✓ before devault  1125 · 302                                                                    <1s
+   ⚠ projects/billing-sync/vars/app_env_vars.yml : texte $ANSIBLE_VAULT hors balise !vault (chaîne …
+   ⚠ tools/passbolt/vars/passbolt.yaml : YAML déjà invalide dans le dépôt
+ ✓ guard  2 hosts in 192.0.2.0/24
+
+━━ 1/3  Docker hosts + Caddy ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+::group::▸ servers/docker/deploy_full.yaml   web-01 mon-01
+   ● Enable ressource slice                    web-01 mon-01
+::endgroup::
+   ✓ 22 ok  ● 1 changed  ⊘ 8 skip                                                                13s
+::group::▸ tools/caddy/deploy.yaml   web-01 mon-01
+   ● Create an container with caddy-custom     web-01 mon-01
+   ● Restart caddy                             web-01 mon-01
+::endgroup::
+   ✓ 4 ok  ● 2 changed                                                                            3s
+
+━━ 2/3  Monitoring stack (mon-01) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ▸ tools/monitoring-servers/deploy-loki.yaml   mon-01   ✓ 6 ok  ⊘ 1 skip   unchanged              2s
+::group::▸ tools/monitoring-servers/deploy-prometheus.yaml   mon-01
+   ● Create/Update Prometheus container
+::endgroup::
+   ✓ 5 ok  ● 1 changed  ⊘ 1 skip                                                                  3s
+ ▸ tools/monitoring-servers/deploy-tempo.yaml   mon-01   ✓ 10 ok  ⊘ 1 skip   unchanged            4s
+::group::▸ tools/monitoring-servers/deploy-grafana.yaml   mon-01
+   ● Reset Grafana provisioning tree on remo…  2/2 items  /home/deploy/monitoring/grafana/provision…
+   ● Ensure Grafana config directories exist   3/4 items  /home/deploy/monitoring/grafana/provision…
+   ● Copy Grafana provisioning files (dashboard providers)
+   ● Template Grafana datasources (interpolates vault secret)
+   ● Copy Grafana dashboards
+   ● Create/Update Grafana container
+::endgroup::
+   ✓ 2 ok  ● 6 changed                                                                            5s
+
+━━ 3/3  web-01: application + Alloy ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+::group::▸ projects/app-frontend/deploy.yaml   web-01
+   ● Create app-frontend-host container
+::endgroup::
+   ✓ 4 ok  ● 1 changed                                                                           12s
+::group::▸ tools/monitoring-alloy/deploy-alloy.yaml   web-01
+   ● Create Alloy container
+   ╭─ info  Grafana Alloy v1.17.1 deployed on web-01 (env: development).
+   │ Applications send OpenTelemetry (OTLP) to Alloy at:
+   │   gRPC : grpc://alloy:4317   (OTEL_EXPORTER_OTLP_PROTOCOL=grpc)
+   │   HTTP : http://alloy:4318   (OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf)
+   │   e.g. OTEL_EXPORTER_OTLP_ENDPOINT=http://alloy:4318
+   │ Signals handled: traces -> Tempo | metrics -> Prometheus | logs -> Loki (all pushed to mon-01).
+   │ Replaces the old 'otel-collector' endpoint: same ports, only the host name changes to 'alloy'.
+   │ The app container MUST be attached to the 'proxy_network' or 'monitoring_network' Docker
+   │ network (no port is published on the host).
+   ╰─ Alloy internal UI/API: http://alloy:12345 (reachable from the 'monitoring_network' network).
+::endgroup::
+   ✓ 6 ok  ● 1 changed  ⊘ 5 skip                                                                  8s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  8 playbooks · 2 hosts · 0 failed · 15 changed · 57s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  41   5    13    0     0
+   mon-01  59   10   11    0     0
+
+ ⚠ To fix (deduplicated)
+   ssh   sftp/scp failed → fallback ×20 · 2 hosts  → ansible_ssh_transfer_method=piped
+   2.24  INJECT_FACTS_AS_VARS ×9 · 6 files         → ansible_facts['user_dir'] (no ansible_ prefix)
+         servers/docker/_docker_install.yaml, tools/monitoring-alloy/vars/monitoring-alloy.yml, too…
+   2.25  apt_key deprecated ×1 · servers/docker/_docker_install.yaml:23  → deb822_repository
+   2.25  apt_repository deprecated ×1 · servers/docker/_docker_install.yaml:29  → deb822_repository
+
+ logs  .hush/logs/plan.jsonl

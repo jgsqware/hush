@@ -1,0 +1,10 @@
+- name: Free strategy
+  hosts: web,mon
+  strategy: free
+  gather_facts: false
+  tasks:
+    - name: Sleep a bit, longer on web
+      ansible.builtin.command: "sleep {{ 2 if inventory_hostname == 'web-01' else 0 }}"
+    - name: Second task
+      ansible.builtin.command: "true"
+      changed_when: false

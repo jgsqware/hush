@@ -1,0 +1,17 @@
+[38;5;141m◆ hush[0m  replay
+
+[0Ksection_start:1790847027:hush_playbook_1[collapsed=false][0K [38;5;75m▸ tools/monitoring-servers/deploy-loki.yaml[0m   [38;5;245mmon-01[0m
+[0Ksection_end:1790847027:hush_playbook_1[0K
+   [38;5;203m✗[0m [38;5;203mGathering Facts[0m                           [38;5;203mmon-01  unreachable[0m
+     [38;5;245mmsg: |[0m
+       Failed to connect to the host via ssh: ssh: connect to host 192.0.2.11 port 22: Connection
+       timed out
+   [38;5;203m✗ 1 failed[0m                                                                                     [38;5;245m2s[0m
+
+[38;5;75m━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+ [38;5;203m[1m✘ FAILED[0m[0m[38;5;245m (exit 4)[0m  1 playbook · 1 host · 1 failed · 0 changed · 2s
+
+[38;5;245m   host    ok   chg  skip  fail  unreach[0m
+   mon-01  [38;5;245m0  [0m  [38;5;245m0  [0m  [38;5;245m0   [0m  [38;5;245m0   [0m  [38;5;203m1[0m
+
+ [38;5;245mlogs[0m  .hush/logs/replay.jsonl

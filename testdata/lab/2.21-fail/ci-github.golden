@@ -1,0 +1,33 @@
+◆ hush  replay
+
+::group::▸ playbooks/fail.yaml   web-01 mon-01 ghost-01
+::endgroup::
+   ✗ Ping                                      ghost-01  unreachable
+     at playbooks/fail.yaml:6
+     msg: |
+       Failed to connect to the host via ssh: ssh: connect to host 127.0.0.1 port 2299: Connection
+       refused
+   ✗ Fail on mon only                          mon-01
+     at playbooks/fail.yaml:9
+     msg: The command exited with a non-zero return code.
+     rc: 2
+     stdout: starting
+     stderr: |
+       error: config invalid at line 12
+       hint: check /etc/demo/app.conf
+     ↻ rerun  --start-at-task "Fail on mon only"
+   ● After the failure                         web-01
+   ● 1 changed  ✗ 2 failed                                                                       <1s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✘ FAILED (exit 4)  1 playbook · 3 hosts · 2 failed · 1 changed · <1s
+
+   host      ok   chg  skip  fail  unreach
+   web-01    2    1    1     0     0
+   mon-01    1    0    0     1     0
+   ghost-01  0    0    0     0     1
+
+ ⚠ To fix (deduplicated)
+   ssh  sftp/scp failed → fallback ×4 · mon-01  → ansible_ssh_transfer_method=piped
+
+ logs  .hush/logs/replay.jsonl

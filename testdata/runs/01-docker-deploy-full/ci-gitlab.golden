@@ -1,0 +1,22 @@
+[38;5;141m◆ hush[0m  replay
+
+[0Ksection_start:1790847012:hush_playbook_1[collapsed=false][0K [38;5;75m▸ servers/docker/deploy_full.yaml[0m   [38;5;245mweb-01 mon-01[0m
+   [38;5;214m●[0m Enable ressource slice                    web-01 mon-01
+[0Ksection_end:1790847021:hush_playbook_1[0K
+   [38;5;71m✓ 22 ok[0m  [38;5;214m● 1 changed[0m  [38;5;245m⊘ 8 skip[0m                                                                [38;5;245m13s[0m
+
+[38;5;75m━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+ [38;5;71m[1m✔ SUCCESS[0m[0m  1 playbook · 2 hosts · 0 failed · 2 changed · 13s
+
+[38;5;245m   host    ok   chg  skip  fail  unreach[0m
+   web-01  [38;5;71m23 [0m  [38;5;214m1  [0m  [38;5;245m8   [0m  [38;5;245m0   [0m  [38;5;245m0[0m
+   mon-01  [38;5;71m23 [0m  [38;5;214m1  [0m  [38;5;245m8   [0m  [38;5;245m0   [0m  [38;5;245m0[0m
+
+ [38;5;214m⚠ To fix (deduplicated)[0m
+   [38;5;75mssh [0m  sftp/scp failed → fallback [38;5;214m×4[0m[38;5;245m · 2 hosts[0m  [38;5;71m→ ansible_ssh_transfer_method=piped[0m
+   [38;5;75m2.25[0m  apt_key deprecated [38;5;214m×1[0m[38;5;245m · servers/docker/_docker_install.yaml:23[0m  [38;5;71m→ deb822_repository[0m
+   [38;5;75m2.25[0m  apt_repository deprecated [38;5;214m×1[0m[38;5;245m · servers/docker/_docker_install.yaml:29[0m  [38;5;71m→ deb822_repository[0m
+   [38;5;75m2.24[0m  INJECT_FACTS_AS_VARS [38;5;214m×1[0m[38;5;245m · servers/docker/_docker_install.yaml:100[0m
+         [38;5;71m→ ansible_facts['virtualization_type'] (no ansible_ prefix)[0m
+
+ [38;5;245mlogs[0m  .hush/logs/replay.jsonl

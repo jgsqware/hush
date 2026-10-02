@@ -1,0 +1,17 @@
+all:
+  vars:
+    ansible_user: hush
+    ansible_host: 127.0.0.1
+    ansible_ssh_private_key_file: "{{ inventory_dir }}/lab/id_ed25519"
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+    ansible_python_interpreter: /usr/bin/python3
+  children:
+    web:
+      hosts:
+        web-01: { ansible_port: 2221 }
+    mon:
+      hosts:
+        mon-01: { ansible_port: 2222 }
+    ghost:
+      hosts:
+        ghost-01: { ansible_port: 2299 }   # nothing listens here: unreachable

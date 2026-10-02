@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="hush" tests="28" failures="0" errors="0" skipped="3" time="3.008">
+  <testsuite name="playbooks/site.yaml" tests="28" failures="0" errors="0" skipped="3" time="3.008" timestamp="2026-10-01T13:47:00">
+    <testcase name="Gathering Facts [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="3" time="0.638"></testcase>
+    <testcase name="Gathering Facts [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="3" time="0.642"></testcase>
+    <testcase name="Gather a fact [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="7" time="0.226"></testcase>
+    <testcase name="Gather a fact [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="7" time="0.223"></testcase>
+    <testcase name="Always ok [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="11" time="0.206"></testcase>
+    <testcase name="Always ok [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="11" time="0.21"></testcase>
+    <testcase name="Only on web [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="15" time="0.007">
+      <skipped message="Conditional result was False"></skipped>
+    </testcase>
+    <testcase name="Only on web [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="15" time="0.146">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="Create config directories [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="19" time="0.655"></testcase>
+    <testcase name="Create config directories [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="19" time="0.665"></testcase>
+    <testcase name="Write config [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="25" time="0.389">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="Write config [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="25" time="0.391">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="Show version info [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="31" time="0.011"></testcase>
+    <testcase name="Show version info [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="31" time="0.011"></testcase>
+    <testcase name="Use a top-level fact (deprecated in recent ansible) [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="37" time="0.007">
+      <skipped message="Conditional result was False"></skipped>
+    </testcase>
+    <testcase name="Use a top-level fact (deprecated in recent ansible) [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="37" time="0.005">
+      <skipped message="Conditional result was False"></skipped>
+    </testcase>
+    <testcase name="Include extra tasks [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="42" time="0.006"></testcase>
+    <testcase name="Include extra tasks [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="42" time="0.008"></testcase>
+    <testcase name="Extra task from include [web-01]" classname="Configure web and mon" file="playbooks/tasks/extra.yaml" line="1" time="0.151"></testcase>
+    <testcase name="Extra task from include [mon-01]" classname="Configure web and mon" file="playbooks/tasks/extra.yaml" line="1" time="0.156"></testcase>
+    <testcase name="Tolerated failure [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="45" time="0.153">
+      <system-out>failed (ignored): The command exited with a non-zero return code.</system-out>
+    </testcase>
+    <testcase name="Tolerated failure [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="45" time="0.156">
+      <system-out>failed (ignored): The command exited with a non-zero return code.</system-out>
+    </testcase>
+    <testcase name="Fails on purpose [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="51" time="0.157">
+      <system-out>failed (rescued): The command exited with a non-zero return code.</system-out>
+    </testcase>
+    <testcase name="Fails on purpose [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="51" time="0.158">
+      <system-out>failed (rescued): The command exited with a non-zero return code.</system-out>
+    </testcase>
+    <testcase name="Recovered [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="54" time="0.009"></testcase>
+    <testcase name="Recovered [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="54" time="0.01"></testcase>
+    <testcase name="Restart demo [web-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="59" time="0.157">
+      <system-out>changed</system-out>
+    </testcase>
+    <testcase name="Restart demo [mon-01]" classname="Configure web and mon" file="playbooks/site.yaml" line="59" time="0.158">
+      <system-out>changed</system-out>
+    </testcase>
+  </testsuite>
+</testsuites>

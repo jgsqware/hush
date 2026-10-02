@@ -1,0 +1,16 @@
+◆ hush  replay
+
+ ▸ projects/app-frontend/deploy.yaml   web-01
+   ● Create app-frontend-host container
+   ✓ 4 ok  ● 1 changed                                                                           12s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 1 host · 0 failed · 1 changed · 12s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  5    1    0     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh  sftp/scp failed → fallback ×2 · 192.0.2.10  → ansible_ssh_transfer_method=piped
+
+ logs  .hush/logs/replay.jsonl

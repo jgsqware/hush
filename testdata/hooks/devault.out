@@ -1,0 +1,4 @@
+[lab] copie dé-vaultée -> .lab/work (mode stub)
+lab-devault: 1125 bloc(s) !vault remplacé(s) dans 302 fichier(s) -> /work/infra/.lab/work
+  AVERTISSEMENT projects/billing-sync/vars/app_env_vars.yml : texte $ANSIBLE_VAULT hors balise !vault (chaîne entre guillemets ?)
+  AVERTISSEMENT tools/passbolt/vars/passbolt.yaml : YAML déjà invalide dans le dépôt

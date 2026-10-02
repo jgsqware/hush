@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
+
+project_name: hush
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+
+builds:
+  - id: hush
+    main: ./cmd/hush
+    binary: hush
+    env: [CGO_ENABLED=0]
+    goos: [linux, darwin]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w -X main.version={{ .Version }} -X main.commit={{ .ShortCommit }} -X main.date={{ .Date }}
+
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files: [LICENSE, README.md, CHANGELOG.md]
+
+checksum:
+  name_template: checksums.txt
+
+sboms:
+  - artifacts: archive
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude: ["^docs:", "^test:", "^mise:"]
+
+homebrew_casks:
+  - name: hush
+    homepage: https://github.com/jgsqware/hush
+    description: Calm, colorful, live output for Ansible
+    license: Apache-2.0
+    binaries: [hush]
+    repository:
+      owner: jgsqware
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    hooks:
+      post:
+        # Binaries are not notarized: drop the quarantine flag macOS sets on download.
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/hush"]
+          end
+
+dockers_v2:
+  - images: [ghcr.io/jgsqware/hush]
+    tags: ["{{ .Version }}", "latest"]
+    dockerfile: Dockerfile
+    platforms: [linux/amd64, linux/arm64]
+    labels:
+      org.opencontainers.image.title: hush
+      org.opencontainers.image.description: Calm, colorful, live output for Ansible
+      org.opencontainers.image.source: https://github.com/jgsqware/hush
+      org.opencontainers.image.licenses: Apache-2.0
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+
+release:
+  github:
+    owner: jgsqware
+    name: hush

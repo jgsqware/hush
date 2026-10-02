@@ -1,0 +1,18 @@
+◆ hush  replay
+
+ ▸ tools/caddy/deploy.yaml   web-01 mon-01
+   ● Create an container with caddy-custom     web-01 mon-01
+   ● Restart caddy                             web-01 mon-01
+   ✓ 4 ok  ● 2 changed                                                                            3s
+
+━━ Summary ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✔ SUCCESS  1 playbook · 2 hosts · 0 failed · 4 changed · 3s
+
+   host    ok   chg  skip  fail  unreach
+   web-01  6    2    0     0     0
+   mon-01  6    2    0     0     0
+
+ ⚠ To fix (deduplicated)
+   ssh  sftp/scp failed → fallback ×4 · 2 hosts  → ansible_ssh_transfer_method=piped
+
+ logs  .hush/logs/replay.jsonl
