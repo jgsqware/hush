@@ -33,17 +33,25 @@ func newRootCmd() *cobra.Command {
 	root := &cobra.Command{
 		Use:   "hush [flags] -- ansible-playbook <args>",
 		Short: "Calm, colorful, live output for Ansible",
-		Example: `  hush -- ansible-playbook site.yml -i inventory --limit web
+		Long: `Calm, colorful, live output for Ansible.
+
+Run without arguments in a terminal to pick a playbook and an inventory
+with a fuzzy finder.`,
+		Example: `  hush                                   # fuzzy-find a playbook and an inventory
+  hush -- ansible-playbook site.yml -i inventory --limit web
   hush replay .hush/logs/20261001-113008-site.jsonl`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Args:          cobra.ArbitraryArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			dash := cmd.ArgsLenAtDash()
+			if len(args) == 0 && dash < 0 && interactive() {
+				return pickAndRun(cmd, g)
+			}
 			if dash < 0 || len(args[dash:]) == 0 {
 				return cmd.Help()
 			}
-			return wrap(cmd, g, args[dash:])
+			return wrap(cmd, g, args[dash:], "")
 		},
 	}
 	f := root.PersistentFlags()
@@ -57,8 +65,8 @@ func newRootCmd() *cobra.Command {
 	return root
 }
 
-// wrap runs a single ansible-playbook command.
-func wrap(cmd *cobra.Command, g globalFlags, argv []string) error {
+// wrap runs a single ansible-playbook command in dir (empty: the current directory).
+func wrap(cmd *cobra.Command, g globalFlags, argv []string, dir string) error {
 	logPath := filepath.Join(g.logDir, time.Now().Format("20060102-150405")+"-"+slug(playbookArg(argv))+".jsonl")
 	log, err := runner.OpenLog(logPath)
 	if err != nil {
@@ -78,7 +86,7 @@ func wrap(cmd *cobra.Command, g globalFlags, argv []string) error {
 	if _, err := log.Write(append(cmdEvent, '\n')); err != nil {
 		return err
 	}
-	_, runErr := runner.Run(cmd.Context(), runner.Config{Argv: argv, Log: log}, out.handle)
+	_, runErr := runner.Run(cmd.Context(), runner.Config{Argv: argv, Dir: dir, Log: log}, out.handle)
 	sum, err := out.finish()
 	if runErr != nil {
 		return runErr

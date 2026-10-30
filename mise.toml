@@ -33,8 +33,13 @@ sources = ["go.mod", "go.sum", "cmd/**/*.go", "internal/**/*"]
 outputs = ["bin/hush"]
 
 [tasks.install]
-description = "Install hush into $GOBIN (or ~/go/bin)"
-run = 'go install -ldflags "{{vars.ldflags}}" ./cmd/hush'
+description = "Build hush and install it into ~/.local/bin"
+depends = ["build"]
+run = [
+  'install -Dm755 bin/hush "$HOME/.local/bin/hush"',
+  'echo "installed $HOME/.local/bin/hush"',
+  'case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) echo "note: ~/.local/bin is not in your PATH" ;; esac',
+]
 
 [tasks.fmt]
 description = "Format Go code"

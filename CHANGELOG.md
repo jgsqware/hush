@@ -4,6 +4,16 @@ All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `hush` with no arguments in a terminal opens a built-in fuzzy finder to pick a playbook,
+  then an inventory (or the ansible.cfg default), and runs them. It searches the enclosing
+  Ansible project, or parent directories when the current one has no playbook, and runs
+  each playbook from its project directory. A last step narrows the run with `--limit`: one of
+  the targeted hosts, one of their groups, or a typed pattern.
+
 ## [0.1.0] - 2026-10-02
 
 First release.

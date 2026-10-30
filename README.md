@@ -60,6 +60,19 @@ Put `hush --` in front of the command you already run:
 hush -- ansible-playbook site.yml -i inventory --limit web
 ```
 
+Or just type `hush`: a fuzzy finder lists the playbooks, then the inventories of the
+chosen playbook's project (its `ansible.cfg` default first). From a subdirectory, hush
+searches the whole Ansible project (the nearest `ansible.cfg` above); from a directory
+without playbooks, it looks one or two levels up, so a sibling Ansible repo is found.
+Each playbook runs from its project directory, so its `ansible.cfg` applies.
+A last step picks the hosts: all the hosts the playbook targets, one of their groups
+(`@azure`), a single host (`azure24`, searchable by name or address), or any `--limit`
+pattern you type (`azure1,azure2`, `tc_agent:&on_prem`). hush asks Ansible itself
+(`ansible-playbook --list-hosts`), so constructed groups and host patterns are resolved
+exactly. Type to filter, `↑`/`↓` to move, `Enter` to
+pick, `Esc` to cancel. hush prints the equivalent `hush -- ansible-playbook …` command and
+runs it.
+
 Run several playbooks with one global summary, after optional checks:
 
 ```sh
